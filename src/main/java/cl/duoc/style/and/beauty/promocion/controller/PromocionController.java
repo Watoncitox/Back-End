@@ -1,7 +1,7 @@
-package cl.duoc.style.and.beauty.servicio.controller;
+package cl.duoc.style.and.beauty.promocion.controller;
 
-import cl.duoc.style.and.beauty.servicio.model.Promocion;
-import cl.duoc.style.and.beauty.servicio.repository.PromocionRepository;
+import cl.duoc.style.and.beauty.promocion.model.Promocion;
+import cl.duoc.style.and.beauty.promocion.repository.PromocionRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

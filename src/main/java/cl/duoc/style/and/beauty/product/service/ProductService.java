@@ -2,10 +2,8 @@ package cl.duoc.style.and.beauty.product.service;
 
 import cl.duoc.style.and.beauty.product.dto.ProductDTO;
 import cl.duoc.style.and.beauty.product.dto.ProductRequestDTO;
-import cl.duoc.style.and.beauty.product.model.Proveedor;
 import cl.duoc.style.and.beauty.product.model.Product;
 import cl.duoc.style.and.beauty.product.repository.ProductRepository;
-import cl.duoc.style.and.beauty.product.repository.ProveedorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,15 +13,12 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProveedorRepository proveedorRepository;
 
-    public ProductService(ProductRepository productRepository,
-                          ProveedorRepository proveedorRepository) {
+    public ProductService(ProductRepository productRepository) { // ← CORREGIDO
         this.productRepository = productRepository;
-        this.proveedorRepository = proveedorRepository;
     }
 
-    // Convertir entity -> DTO
+    // Convertir de Entity → DTO
     private ProductDTO toDTO(Product p) {
         ProductDTO dto = new ProductDTO();
         dto.setId(p.getId());
@@ -32,11 +27,25 @@ public class ProductService {
         dto.setPrecio(p.getPrecio());
         dto.setCategoria(p.getCategoria());
         dto.setStockMinimo(p.getStockMinimo());
-
-        dto.setProveedorId(p.getProveedor().getId());
-        dto.setProveedorNombre(p.getProveedor().getNombre());
-
         return dto;
+    }
+
+    // Convertir de RequestDTO → Entity
+    private Product toEntity(ProductRequestDTO dto) {
+        Product p = new Product();
+        p.setNombre(dto.getNombre());
+        p.setDescripcion(dto.getDescripcion());
+        p.setPrecio(dto.getPrecio());
+        p.setCategoria(dto.getCategoria());
+        p.setStockMinimo(dto.getStockMinimo());
+        return p;
+    }
+
+    // SAVE
+    public ProductDTO save(ProductRequestDTO dto) {
+        Product entity = toEntity(dto);
+        Product saved = productRepository.save(entity);
+        return toDTO(saved);
     }
 
     // GET ALL
@@ -54,23 +63,7 @@ public class ProductService {
                 .orElse(null);
     }
 
-    // SAVE PRODUCT
-    public ProductDTO save(ProductRequestDTO dto) {
-        Proveedor proveedor = proveedorRepository.findById(dto.getProveedorId())
-                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado"));
-
-        Product p = new Product();
-        p.setProveedor(proveedor);
-        p.setNombre(dto.getNombre());
-        p.setDescripcion(dto.getDescripcion());
-        p.setPrecio(dto.getPrecio());
-        p.setCategoria(dto.getCategoria());
-        p.setStockMinimo(dto.getStockMinimo());
-
-        Product saved = productRepository.save(p);
-        return toDTO(saved);
-    }
-
+    // DELETE
     public void delete(Long id) {
         productRepository.deleteById(id);
     }

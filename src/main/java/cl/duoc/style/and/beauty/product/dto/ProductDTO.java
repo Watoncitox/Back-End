@@ -14,7 +14,4 @@ public class ProductDTO {
     private String categoria;
     private Integer stockMinimo;
 
-    // Datos resumidos del proveedor
-    private Long proveedorId;
-    private String proveedorNombre;
 }

@@ -2,7 +2,6 @@ package cl.duoc.style.and.beauty.product.controller;
 
 import cl.duoc.style.and.beauty.product.dto.ProductDTO;
 import cl.duoc.style.and.beauty.product.dto.ProductRequestDTO;
-import cl.duoc.style.and.beauty.product.model.Product;
 import cl.duoc.style.and.beauty.product.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/productos")
-@CrossOrigin(origins = "*") // Permite que tu frontend se conecte sin problemas
+@CrossOrigin(origins = "*")
 public class ProductController {
 
     private final ProductService productService;
@@ -36,8 +35,6 @@ public class ProductController {
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-
-    // DELETE: Eliminar producto
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
         productService.delete(id);

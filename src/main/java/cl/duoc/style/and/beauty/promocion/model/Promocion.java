@@ -1,5 +1,6 @@
-package cl.duoc.style.and.beauty.servicio.model;
+package cl.duoc.style.and.beauty.promocion.model;
 
+import cl.duoc.style.and.beauty.servicio.model.Servicio;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

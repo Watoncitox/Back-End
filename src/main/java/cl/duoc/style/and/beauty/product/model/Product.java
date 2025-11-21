@@ -15,10 +15,6 @@ public class Product {
     @Column(name = "ID_PRODUCTO")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_PROVEEDOR", nullable = false)
-    private Proveedor proveedor;
-
 
     @Column(name = "NOMBRE")
     private String nombre;

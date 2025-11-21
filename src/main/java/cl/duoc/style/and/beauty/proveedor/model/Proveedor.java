@@ -1,4 +1,4 @@
-package cl.duoc.style.and.beauty.product.model;
+package cl.duoc.style.and.beauty.proveedor.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,7 +15,7 @@ public class Proveedor {
     @Column(name = "ID_PROVEEDOR")
     private Long id;
 
-    @Column(name = "NOMBRE")
+    @Column(name = "NOMBRE", nullable = false, unique = true)
     private String nombre;
 
     @Column(name = "CONTACTO")

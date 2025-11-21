@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class ProductRequestDTO {
 
-    private Long proveedorId;
     private String nombre;
     private String descripcion;
     private Double precio;
