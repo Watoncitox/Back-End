@@ -3,13 +3,12 @@ package cl.duoc.style.and.beauty.inventario.controller;
 import cl.duoc.style.and.beauty.inventario.dto.InventarioDTO;
 import cl.duoc.style.and.beauty.inventario.dto.InventarioRequestDTO;
 import cl.duoc.style.and.beauty.inventario.service.InventarioService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/inventario")
+@RequestMapping("/inventario") // <-- ESTA ES LA RUTA QUE POSTMAN ESTÁ BUSCANDO
 @CrossOrigin(origins = "*")
 public class InventarioController {
 
@@ -20,24 +19,31 @@ public class InventarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<InventarioDTO>> listar() {
-        return ResponseEntity.ok(service.findAll());
+    public List<InventarioDTO> getAll() {
+        return service.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InventarioDTO> obtener(@PathVariable Long id) {
-        InventarioDTO dto = service.findById(id);
-        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
+    public InventarioDTO getById(@PathVariable Long id) {
+        return service.findById(id);
     }
 
     @PostMapping
-    public ResponseEntity<InventarioDTO> crear(@RequestBody InventarioRequestDTO dto) {
-        return ResponseEntity.ok(service.save(dto));
+    public InventarioDTO create(@RequestBody InventarioRequestDTO dto) {
+        return service.save(dto);
+    }
+
+    @PutMapping("/{id}")
+    public InventarioDTO update(@PathVariable Long id, @RequestBody InventarioRequestDTO dto) {
+        InventarioDTO existente = service.findById(id);
+        if (existente == null) {
+            return null;
+        }
+        return service.save(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

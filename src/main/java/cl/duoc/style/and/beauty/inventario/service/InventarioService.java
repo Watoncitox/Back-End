@@ -18,9 +18,9 @@ public class InventarioService {
         this.repository = repository;
     }
 
+    // Entity -> DTO
     private InventarioDTO toDTO(Inventario inv) {
         InventarioDTO dto = new InventarioDTO();
-
         dto.setId(inv.getId());
         dto.setProductoId(inv.getProductoId());
         dto.setCantidadDisponible(inv.getCantidadDisponible());
@@ -28,9 +28,19 @@ public class InventarioService {
         return dto;
     }
 
+    // RequestDTO -> Entity
+    private Inventario toEntity(InventarioRequestDTO dto) {
+        Inventario inv = new Inventario();
+        inv.setProductoId(dto.getProductoId());
+        inv.setCantidadDisponible(dto.getCantidadDisponible());
+        // fechaActualizacion se setea solo en el @PrePersist/@PreUpdate
+        return inv;
+    }
+
     public List<InventarioDTO> findAll() {
         return repository.findAll()
-                .stream().map(this::toDTO)
+                .stream()
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -41,12 +51,9 @@ public class InventarioService {
     }
 
     public InventarioDTO save(InventarioRequestDTO dto) {
-        Inventario inv = new Inventario();
-
-        inv.setProductoID(dto.getProductoId());
-        inv.setCantidadDisponible(dto.getCantidadDisponible());
-
-        return toDTO(repository.save(inv));
+        Inventario inv = toEntity(dto);
+        Inventario saved = repository.save(inv);
+        return toDTO(saved);
     }
 
     public void delete(Long id) {

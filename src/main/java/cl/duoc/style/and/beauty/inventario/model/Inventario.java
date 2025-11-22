@@ -1,10 +1,15 @@
 package cl.duoc.style.and.beauty.inventario.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 @Entity
 @Table(name = "INVENTARIO")
+@Getter
+@Setter
 public class Inventario {
 
     @Id
@@ -27,6 +32,4 @@ public class Inventario {
     public void preUpdate() {
         this.fechaActualizacion = new Date();
     }
-
-    // Getters y Setters
 }
