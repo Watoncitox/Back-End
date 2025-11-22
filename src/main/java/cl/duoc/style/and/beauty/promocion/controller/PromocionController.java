@@ -1,7 +1,8 @@
 package cl.duoc.style.and.beauty.promocion.controller;
 
-import cl.duoc.style.and.beauty.promocion.model.Promocion;
-import cl.duoc.style.and.beauty.promocion.repository.PromocionRepository;
+import cl.duoc.style.and.beauty.promocion.dto.PromocionDTO;
+import cl.duoc.style.and.beauty.promocion.dto.PromocionRequestDTO;
+import cl.duoc.style.and.beauty.promocion.service.PromocionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,35 +13,31 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class PromocionController {
 
-    private final PromocionRepository promocionRepository;
+    private final PromocionService service;
 
-    public PromocionController(PromocionRepository promocionRepository) {
-        this.promocionRepository = promocionRepository;
+    public PromocionController(PromocionService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<List<Promocion>> listarPromociones() {
-        return ResponseEntity.ok(promocionRepository.findAll());
-    }
-
-    @GetMapping("/activas")
-    public ResponseEntity<List<Promocion>> listarActivas() {
-        return ResponseEntity.ok(
-                promocionRepository.findAll()
-                        .stream()
-                        .filter(p -> p.getActiva().equalsIgnoreCase("S"))
-                        .toList()
-        );
+    public ResponseEntity<List<PromocionDTO>> listar() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<Promocion> crearPromocion(@RequestBody Promocion promocion) {
-        return ResponseEntity.ok(promocionRepository.save(promocion));
+    public ResponseEntity<PromocionDTO> crear(@RequestBody PromocionRequestDTO dto) {
+        return ResponseEntity.ok(service.save(dto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PromocionDTO> obtener(@PathVariable Long id) {
+        PromocionDTO dto = service.findById(id);
+        return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPromocion(@PathVariable Long id) {
-        promocionRepository.deleteById(id);
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

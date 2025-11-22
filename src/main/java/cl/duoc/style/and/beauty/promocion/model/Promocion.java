@@ -2,13 +2,12 @@ package cl.duoc.style.and.beauty.promocion.model;
 
 import cl.duoc.style.and.beauty.servicio.model.Servicio;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import java.util.Date;
 
+@Data
 @Entity
 @Table(name = "PROMOCION")
-@Getter
-@Setter
 public class Promocion {
 
     @Id
@@ -24,11 +23,13 @@ public class Promocion {
     private Double descuento;
 
     @Column(name = "FECHA_INICIO", nullable = false)
-    private java.sql.Date fechaInicio;
+    @Temporal(TemporalType.DATE)
+    private Date fechaInicio;
 
     @Column(name = "FECHA_FIN", nullable = false)
-    private java.sql.Date fechaFin;
+    @Temporal(TemporalType.DATE)
+    private Date fechaFin;
 
     @Column(name = "ACTIVA", nullable = false)
-    private String activa;
+    private String activa; // S o N
 }
